@@ -20,25 +20,40 @@ await client.execute({
   args: [email, passwordHash],
 });
 
+// Remove the old placeholder (/samples/*.svg) content so the real artworks replace it.
+const { rows: nonSample } = await client.execute(
+  "SELECT COUNT(*) AS n FROM artworks WHERE image_url NOT LIKE '/samples/%'",
+);
+if (Number(nonSample[0].n) === 0) {
+  await client.execute("DELETE FROM placements");
+  await client.execute("DELETE FROM exhibitions WHERE slug = 'opening-show'");
+  await client.execute("DELETE FROM artworks");
+}
+
 const { rows } = await client.execute("SELECT COUNT(*) AS n FROM artworks");
 if (Number(rows[0].n) === 0) {
-  const art = (n, title, artist, year, medium) => ({
+  const art = (file, title, medium) => ({
     title,
-    artist,
-    year,
+    artist: "Reena",
+    year: "2026",
     medium,
-    description: "Placeholder artwork. Replace it from the admin.",
-    imageUrl: `/samples/art-${n}.svg`,
+    description: "",
+    imageUrl: `/artworks/${file}.jpg`,
   });
-  const samples = [
-    art(1, "Morning Fields", "A. Sample", "2021", "Oil on canvas"),
-    art(2, "Harbour Light", "A. Sample", "2022", "Acrylic"),
-    art(3, "Quiet Hours", "B. Sample", "2020", "Gouache"),
-    art(4, "Terraces", "B. Sample", "2023", "Mixed media"),
-    art(5, "Low Tide", "C. Sample", "2019", "Watercolour"),
-    art(6, "Understory", "C. Sample", "2024", "Oil on panel"),
+  const works = [
+    art("ghats", "Ghats of Kashi", "Acrylic on canvas"), // 1
+    art("lady-in-hat", "Lady in the Floral Hat", "Acrylic on canvas"), // 2
+    art("musicians", "Celebration", "Mixed media on paper"), // 3
+    art("city-woman", "Woman of Monuments", "Mixed media on canvas"), // 4
+    art("pink-path", "Blossom Path", "Acrylic on canvas"), // 5
+    art("coin-tree", "Tree of Prosperity", "Acrylic and coins on canvas"), // 6
+    art("warli", "Harvest Procession", "Warli art, acrylic on canvas"), // 7
+    art("ganesha", "Blue Ganesha", "Acrylic on canvas"), // 8
+    art("lanterns", "Lanterns and Blossoms", "Acrylic on paper"), // 9
+    art("peacocks", "Lady with Peacocks", "Mixed media on paper"), // 10
+    art("pottery", "The Potters", "Colour pencil and watercolour"), // 11
   ];
-  for (const a of samples) {
+  for (const a of works) {
     await client.execute({
       sql: "INSERT INTO artworks (title, artist, year, medium, description, image_url) VALUES (?, ?, ?, ?, ?, ?)",
       args: [a.title, a.artist, a.year, a.medium, a.description, a.imageUrl],
@@ -47,24 +62,31 @@ if (Number(rows[0].n) === 0) {
 
   const ex = await client.execute({
     sql: "INSERT INTO exhibitions (slug, title, description, status) VALUES (?, ?, ?, 'published') RETURNING id",
-    args: ["opening-show", "Opening Show", "A sample exhibition. Edit the room and layout from the admin."],
+    args: ["opening-show", "Opening Show", "Paintings by Reena. Edit the room and layout from the admin."],
   });
   const exhibitionId = Number(ex.rows[0].id);
+  const { rows: ids } = await client.execute("SELECT id FROM artworks ORDER BY id");
   const layout = [
-    [1, "north", -3.5, 1.7, 2.2, "gold"],
-    [2, "north", 3.5, 1.7, 2.2, "gold"],
-    [3, "west", -4, 1.6, 1.8, "gold"],
-    [4, "west", 3, 1.6, 1.8, "gold"],
-    [5, "east", -4, 1.6, 1.8, "gold"],
-    [6, "east", 3, 1.6, 1.8, "gold"],
+    // [index into works, wall, offset, elevation, width, frame]
+    [0, "north", -4.5, 1.6, 2.6, "gold"],
+    [1, "north", 0, 1.6, 1.7, "gold"],
+    [2, "north", 4.5, 1.6, 2.6, "gold"],
+    [3, "west", -4.5, 1.6, 1.5, "gold"],
+    [4, "west", -1.5, 1.6, 2.2, "gold"],
+    [5, "west", 1.5, 1.6, 1.8, "gold"],
+    [6, "west", 4.5, 1.6, 2.2, "gold"],
+    [7, "east", -4.5, 1.6, 1.6, "gold"],
+    [8, "east", -1.5, 1.6, 2.2, "gold"],
+    [9, "east", 1.5, 1.6, 1.7, "gold"],
+    [10, "east", 4.5, 1.6, 2.2, "gold"],
   ];
-  for (const [artworkId, wall, offset, elevation, width, frame] of layout) {
+  for (const [i, wall, offset, elevation, width, frame] of layout) {
     await client.execute({
       sql: "INSERT INTO placements (exhibition_id, artwork_id, wall, offset, elevation, width, frame) VALUES (?, ?, ?, ?, ?, ?, ?)",
-      args: [exhibitionId, artworkId, wall, offset, elevation, width, frame],
+      args: [exhibitionId, Number(ids[i].id), wall, offset, elevation, width, frame],
     });
   }
 }
 
-console.log(`Seeded admin ${email} and sample exhibition.`);
+console.log(`Seeded admin ${email} and the artwork exhibition.`);
 client.close();
