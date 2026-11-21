@@ -58,3 +58,16 @@ export const placements = sqliteTable("placements", {
   width: real("width").notNull().default(1.6),
   frame: text("frame", { enum: ["none", "thin", "gold", "black"] }).notNull().default("thin"),
 });
+
+export const artistProfile = sqliteTable("artist_profile", {
+  id: integer("id").primaryKey(),
+  name: text("name").notNull().default("Mimi"),
+  roles: text("roles").notNull().default("Artist · Painter · Dreamer"),
+  bio: text("bio").notNull().default("Hand-painted creations inspired by art and divine divinity. DM for orders."),
+  imageUrl: text("image_url").notNull().default(""),
+  instagram: text("instagram").notNull().default("@mimisbrushstrokes"),
+  email: text("email").notNull().default("hello@mimisbrushstrokes.com"),
+  phone: text("phone").notNull().default("+91 98XXX XXXXX"),
+  location: text("location").notNull().default("India · Worldwide Shipping"),
+  orderNote: text("order_note").notNull().default("DM on Instagram or reach out via email for custom commissions and available originals."),
+});

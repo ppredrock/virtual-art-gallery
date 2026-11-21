@@ -1,6 +1,28 @@
 import { asc, desc, eq } from "drizzle-orm";
-import { artworks, db, exhibitions, placements } from "@/lib/db";
+import { artistProfile, artworks, db, exhibitions, placements } from "@/lib/db";
 import type { RoomConfig } from "@/lib/types";
+
+export const DEFAULT_ARTIST_PROFILE = {
+  id: 1,
+  name: "Mimi",
+  roles: "Artist · Painter · Dreamer",
+  bio: "Hand-painted creations inspired by art and divine divinity. DM for orders.",
+  imageUrl: "",
+  instagram: "@mimisbrushstrokes",
+  email: "hello@mimisbrushstrokes.com",
+  phone: "+91 98XXX XXXXX",
+  location: "India · Worldwide Shipping",
+  orderNote: "DM on Instagram or reach out via email for custom commissions and available originals.",
+};
+
+export async function getArtistProfile() {
+  try {
+    const [row] = await db.select().from(artistProfile).where(eq(artistProfile.id, 1));
+    return row ?? DEFAULT_ARTIST_PROFILE;
+  } catch {
+    return DEFAULT_ARTIST_PROFILE;
+  }
+}
 
 export function roomOf(e: typeof exhibitions.$inferSelect): RoomConfig {
   return {
