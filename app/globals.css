@@ -24,8 +24,6 @@
   --color-ivory: #fbf7ee;
   --color-ivory-dark: #f1e9d6;
   --color-ink: #1d1233;
-
-  --font-display: "Cormorant Garamond", "Didot", "Bodoni 72", "Playfair Display", Georgia, "Times New Roman", serif;
 }
 
 :root {
@@ -33,17 +31,20 @@
 }
 
 body {
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: var(--font-sans), system-ui, -apple-system, "Segoe UI", sans-serif;
   background:
-    radial-gradient(1200px 500px at 50% -10%, rgb(117 65 204 / 0.1), transparent 70%),
+    radial-gradient(1200px 520px at 50% -8%, rgb(117 65 204 / 0.12), transparent 70%),
+    radial-gradient(800px 400px at 85% 20%, rgb(201 162 39 / 0.08), transparent 70%),
     var(--color-ivory);
   color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
 }
 
 h1,
 h2,
-h3 {
-  font-family: var(--font-display);
+h3,
+.font-display {
+  font-family: var(--font-display), "Didot", "Bodoni 72", Georgia, serif;
   letter-spacing: 0.01em;
 }
 

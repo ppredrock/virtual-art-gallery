@@ -20,6 +20,32 @@ export function roomOf(e: typeof exhibitions.$inferSelect): RoomConfig {
 export const listPublishedExhibitions = () =>
   db.select().from(exhibitions).where(eq(exhibitions.status, "published")).orderBy(desc(exhibitions.createdAt));
 
+export async function listPublishedExhibitionsWithPreviews() {
+  const list = await listPublishedExhibitions();
+  if (list.length === 0) return [];
+  const allPlacements = await db
+    .select({
+      exhibitionId: placements.exhibitionId,
+      artworkId: artworks.id,
+      title: artworks.title,
+      imageUrl: artworks.imageUrl,
+    })
+    .from(placements)
+    .innerJoin(artworks, eq(placements.artworkId, artworks.id))
+    .orderBy(asc(placements.id));
+
+  const byEx = new Map<number, { artworkId: number; title: string; imageUrl: string }[]>();
+  for (const row of allPlacements) {
+    const arr = byEx.get(row.exhibitionId) ?? [];
+    arr.push({ artworkId: row.artworkId, title: row.title, imageUrl: row.imageUrl });
+    byEx.set(row.exhibitionId, arr);
+  }
+  return list.map((ex) => ({
+    ...ex,
+    artworks: byEx.get(ex.id) ?? [],
+  }));
+}
+
 export const listExhibitions = () => db.select().from(exhibitions).orderBy(desc(exhibitions.createdAt));
 
 export const listArtworks = () => db.select().from(artworks).orderBy(desc(artworks.createdAt));
