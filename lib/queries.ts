@@ -7,7 +7,7 @@ export const DEFAULT_ARTIST_PROFILE = {
   name: "Mimi",
   roles: "Artist · Painter · Dreamer",
   bio: "Hand-painted creations inspired by art and divine divinity. DM for orders.",
-  imageUrl: "",
+  imageUrl: "/artist.jpg",
   instagram: "@mimisbrushstrokes",
   email: "hello@mimisbrushstrokes.com",
   phone: "+91 98XXX XXXXX",
