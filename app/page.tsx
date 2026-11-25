@@ -157,7 +157,10 @@ export default async function Home() {
                 {artist.email && (
                   <div className="flex flex-col">
                     <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-royal-600">Email</span>
-                    <a href={`mailto:${artist.email}`} className="font-medium text-royal-900 hover:text-gold-700">
+                    <a
+                      href={`mailto:${artist.email}`}
+                      className="font-medium text-royal-800 underline decoration-gold-500/70 underline-offset-4 transition hover:text-gold-700"
+                    >
                       {artist.email}
                     </a>
                   </div>
@@ -169,7 +172,7 @@ export default async function Home() {
                   </div>
                 )}
                 {artist.location && (
-                  <div className="flex flex-col">
+                  <div className="flex flex-col sm:col-span-2">
                     <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-royal-600">Studio</span>
                     <span className="font-medium text-royal-900">{artist.location}</span>
                   </div>

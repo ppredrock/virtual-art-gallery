@@ -4,14 +4,14 @@ import type { RoomConfig } from "@/lib/types";
 
 export const DEFAULT_ARTIST_PROFILE = {
   id: 1,
-  name: "Mimi",
+  name: "Reena Sinha",
   roles: "Artist · Painter · Dreamer",
   bio: "Hand-painted creations inspired by art and divine divinity. DM for orders.",
   imageUrl: "/artist.jpg",
-  instagram: "@mimisbrushstrokes",
-  email: "hello@mimisbrushstrokes.com",
-  phone: "+91 98XXX XXXXX",
-  location: "India · Worldwide Shipping",
+  instagram: "mimmibrush&stroke",
+  email: "ashapurnasinha10@gmail.com",
+  phone: "",
+  location: "Q-208, Alaknanda Apartment, Gomtinagar Extension, Sector-4, Lucknow, Uttar Pradesh 226010",
   orderNote: "DM on Instagram or reach out via email for custom commissions and available originals.",
 };
 

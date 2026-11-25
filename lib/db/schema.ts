@@ -61,13 +61,13 @@ export const placements = sqliteTable("placements", {
 
 export const artistProfile = sqliteTable("artist_profile", {
   id: integer("id").primaryKey(),
-  name: text("name").notNull().default("Mimi"),
+  name: text("name").notNull().default("Reena Sinha"),
   roles: text("roles").notNull().default("Artist · Painter · Dreamer"),
   bio: text("bio").notNull().default("Hand-painted creations inspired by art and divine divinity. DM for orders."),
-  imageUrl: text("image_url").notNull().default(""),
-  instagram: text("instagram").notNull().default("@mimisbrushstrokes"),
-  email: text("email").notNull().default("hello@mimisbrushstrokes.com"),
-  phone: text("phone").notNull().default("+91 98XXX XXXXX"),
-  location: text("location").notNull().default("India · Worldwide Shipping"),
+  imageUrl: text("image_url").notNull().default("/artist.jpg"),
+  instagram: text("instagram").notNull().default("mimmibrush&stroke"),
+  email: text("email").notNull().default("ashapurnasinha10@gmail.com"),
+  phone: text("phone").notNull().default(""),
+  location: text("location").notNull().default("Q-208, Alaknanda Apartment, Gomtinagar Extension, Sector-4, Lucknow, Uttar Pradesh 226010"),
   orderNote: text("order_note").notNull().default("DM on Instagram or reach out via email for custom commissions and available originals."),
 });
